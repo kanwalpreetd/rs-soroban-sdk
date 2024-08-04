@@ -23,7 +23,7 @@ jobs:
   fmt:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - run: rustup update
     - run: cargo fmt --all --check
 
@@ -37,23 +37,23 @@ jobs:
     # Prevent sudden announcement of a new advisory from failing ci:
     continue-on-error: ${{ matrix.checks == 'advisories' }}
     steps:
-    - uses: actions/checkout@v3
-    - uses: EmbarkStudios/cargo-deny-action@b01e7a8cfb1f496c52d77361e84c1840d8246393
+    - uses: actions/checkout@v4
+    - uses: EmbarkStudios/cargo-deny-action@10d8902cf9225c404574ce39c45d5d26c3047464
       with:
         command: check ${{ matrix.checks }}
 
   check-git-rev-deps:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: stellar/actions/rust-check-git-rev-deps@main
 
   semver-checks:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - run: rustup update
-    - uses: stellar/binaries@v24
+    - uses: stellar/binaries@v26
       with:
         name: cargo-semver-checks
         version: 0.32.0
@@ -83,7 +83,7 @@ jobs:
           target: x86_64-pc-windows-msvc
     runs-on: ${{ matrix.sys.os }}
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: stellar/actions/rust-cache@main
     - name: Use the minimum supported Rust version
       if: matrix.rust == 'msrv'
@@ -100,7 +100,7 @@ jobs:
     - run: cargo version
     - run: rustup target add ${{ matrix.sys.target }}
     - run: rustup target add wasm32-unknown-unknown
-    - uses: stellar/binaries@v18
+    - uses: stellar/binaries@v26
       with:
         name: cargo-hack
         version: 0.5.28
@@ -125,10 +125,10 @@ jobs:
   build-fuzz:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: stellar/actions/rust-cache@main
     - run: rustup install nightly
-    - uses: stellar/binaries@v15
+    - uses: stellar/binaries@v26
       with:
         name: cargo-fuzz
         version: 0.11.2
@@ -137,7 +137,7 @@ jobs:
   docs:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: stellar/actions/rust-cache@main
     - run: rustup install nightly
     - run: make doc
@@ -145,7 +145,7 @@ jobs:
   readme:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: stellar/actions/rust-cache@main
     - run: rustup install nightly
     - run: make readme
